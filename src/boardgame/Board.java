@@ -1,15 +1,15 @@
 package boardgame;
 
 public class Board {
+
 	private int rows;
 	private int columns;
 	private Piece[][] pieces;
 	
 	public Board(int rows, int columns) {
 		if (rows < 1 || columns < 1) {
-			throw new BoardException("Erro ao criar tabuleiro, e nescessário que tenha pelo menos 01 linha e 01 coluna");
+			throw new BoardException("Erro ao criar o tabuleiro: deve haver pelo menos 01 linha e 01 coluna");
 		}
-		
 		this.rows = rows;
 		this.columns = columns;
 		pieces = new Piece[rows][columns];
@@ -22,33 +22,32 @@ public class Board {
 	public int getColumns() {
 		return columns;
 	}
-
+	
 	public Piece piece(int row, int column) {
 		if (!positionExists(row, column)) {
-			throw new BoardException("Posicao nao existe !");
+			throw new BoardException("Posicao fora do tabuleiro");
 		}
 		return pieces[row][column];
 	}
 	
 	public Piece piece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posicao nao existe !");
+			throw new BoardException("Posicao fora do tabuleiro");
 		}
 		return pieces[position.getRow()][position.getColumn()];
 	}
 	
 	public void placePiece(Piece piece, Position position) {
 		if (thereIsAPiece(position)) {
-			throw new BoardException("Ja existe uma peca nessa posicao: " + position);
+			throw new BoardException("Ja existe uma peca em posicao " + position);
 		}
-		
 		pieces[position.getRow()][position.getColumn()] = piece;
 		piece.position = position;
 	}
 	
 	public Piece removePiece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posicao nao existe");
+			throw new BoardException("Posicao fora do tabuleiro");
 		}
 		if (piece(position) == null) {
 			return null;
@@ -59,7 +58,7 @@ public class Board {
 		return aux;
 	}
 	
-	public boolean positionExists(int row, int column) {
+	private boolean positionExists(int row, int column) {
 		return row >= 0 && row < rows && column >= 0 && column < columns;
 	}
 	
@@ -67,12 +66,10 @@ public class Board {
 		return positionExists(position.getRow(), position.getColumn());
 	}
 	
-	public boolean thereIsAPiece(Position position){
+	public boolean thereIsAPiece(Position position) {
 		if (!positionExists(position)) {
-			throw new BoardException("Posicao nao existe !");
+			throw new BoardException("Posicao fora do tabuleiro");
 		}
 		return piece(position) != null;
 	}
-	
-
 }
